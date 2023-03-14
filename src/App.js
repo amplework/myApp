@@ -119,6 +119,10 @@ const styles = {
     justifyContent: "center",
     margin: 18,
     borderRadius: "30px",
+    width:'50%',
+    alignItems:'center',
+    alignSelf:'center',
+    marginLeft:'28%',
   },
   inputContainer: {
     width: "100%",
