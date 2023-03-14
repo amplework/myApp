@@ -1,41 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MyList from "./components/myList";
-import { IoIosAddCircleOutline, IoIosRemoveCircleOutline } from "react-icons/io";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import Modal from "react-modal";
 import "./App.css";
 
 const List = () => {
-
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [inputValue, setinputValue] = React.useState("");
-  const [listItems,setListItems] = React.useState([])
+  const [listItems, setListItems] = React.useState(["A Wednesday", "titanic"]);
 
   function openModal() {
-    setinputValue('')
+    setinputValue("");
     setIsOpen(true);
   }
 
   function onAdditem() {
-    listItems.push(inputValue);
-    setIsOpen(false);
+    if (inputValue == "") {
+      alert("Please fill the name of item!");
+    } else {
+      listItems.push(inputValue);
+      setIsOpen(false);
+    }
   }
 
-  function onRemoveItem(item,index) {
+  function onRemoveItem(item, index) {
     const result = listItems.filter(checkResult);
 
     function checkResult(val) {
       return val != item;
     }
-    setListItems(result)
+    setListItems(result);
   }
 
   function closeModal() {
     setIsOpen(false);
   }
 
-
   return (
-    <div>
+    <div style={styles.addItemContainer1}>
+    <div style={styles.addContainer}>
       <div style={styles.listHeadingContainer}>
         <h1 style={styles.listHeadingTxt}>All Movies List Items</h1>
         <div style={styles.addIconContainer}>
@@ -46,13 +49,10 @@ const List = () => {
           />
         </div>
       </div>
-      {listItems.length > 0 ? listItems.map((item, index) => {
-        return <MyList name={item} onClick={() => onRemoveItem(item,index)}/>;
-      }) : 
-      <div  style={{...styles.addItemContainer, marginTop:'10%'}} >
-          <p style={styles.emptyListtxt}>No items</p>
-      </div>
-       }
+      <MyList
+        onClick={(item, index) => onRemoveItem(item, index)}
+        listItems={listItems}
+      />
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -61,7 +61,7 @@ const List = () => {
         className="Modal"
         overlayClassName="Overlay"
       >
-        <h2 style={styles.addItemContainer}>Add Item</h2>
+        <h2 style={styles.addItemContainer}>Add New Item</h2>
         <form style={{ ...styles.addItemContainer, marginTop: "30px" }}>
           <label style={{ ...styles.addItemContainer, marginLeft: "20px" }}>
             Item:
@@ -77,6 +77,7 @@ const List = () => {
         </div>
       </Modal>
     </div>
+    </div>
   );
 };
 
@@ -87,11 +88,12 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: "10px",
-    marginRight: "10px",
+    flex:1,
+    width:'100%'
   },
   listHeadingTxt: {
     fontWeight: "500",
+    paddingLeft:'10px'
   },
   addIconContainer: {
     marginTop: "15px",
@@ -116,22 +118,37 @@ const styles = {
     alignContent: "center",
     justifyContent: "center",
     margin: 18,
-    borderRadius:'30px'
+    borderRadius: "30px",
   },
   inputContainer: {
     width: "100%",
     height: "40px",
     margin: "20px",
   },
-  emptyListtxt:{
-    fontSize:'50px',
-    color:'rgb(109,109,109)',
-    alignSelf:'center',
-    fontFamily: 'Days One'
+  emptyListtxt: {
+    fontSize: "50px",
+    color: "rgb(109,109,109)",
+    alignSelf: "center",
+    fontFamily: "Days One",
   },
-  buttontxt:{
-    fontSize:'15px',
-    fontWeight:'500',
-    color:'white'
+  buttontxt: {
+    fontSize: "15px",
+    fontWeight: "500",
+    color: "white",
+  },
+  addItemContainer1: {
+    alignSelf: "center",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    flex:1
+  },
+  addContainer:{
+    alignItems:'center',
+    justifyContent:'center',
+    display:'flex',
+    alignContent:'center',
+    flexDirection:'column',
+    width:'50%'
   }
 };
